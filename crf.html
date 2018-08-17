@@ -1,0 +1,52 @@
+<html>
+<head>
+    <title>SPELL CORRECTOR</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div style="text-align: center">
+        <h1>SPELL CORRECTOR</h1>
+        <div style=" padding-top: 10px; float: left">
+            <div><b>Input:</b></div>
+            <div ><textarea rows="30" cols="70" id="input" style="font-family: Arial;max-width: 100%"></textarea></div>
+        </div>
+        <div style=" padding-top: 10px;">
+            <div><b>Result</b></div>
+            <div style="float: right">
+                <textarea rows="30" cols="70" id="output" style="font-family: Arial;max-width: 100%"></textarea>
+            </div>
+            <div style=" padding-top: 230px;">
+                <button style="width: 100px; height: 50px;max-width: 100%" onclick="tokenizer()"><b>Correct</b></button>
+                <script type="text/javascript">
+                    function tokenizer(){
+                        var serverResponse = "";
+                        var input = document.getElementById("input").value;
+                        
+                        var http = new XMLHttpRequest();
+                        var params = input ;
+                        var url = "http://127.0.0.1:12345/crf";
+                        //var url = "http://103.1.210.88:1234/crf";
+                        http.open("POST", url, true);
+                        http.setRequestHeader("Content-type", "text/plain; charset=UTF-8");
+                       
+                        http.onreadystatechange= function() {
+                            if (this.readyState!==4) return; // not ready yet
+                            if (this.status===200) { // HTTP 200 OK
+                                serverResponse = this.responseText;
+                                document.getElementById("input").value = input;
+                                document.getElementById("output").value = serverResponse;
+                            } else {
+                                // server returned an error. Do something with it or ignore it
+                            }
+                        };
+                        http.send(params); 
+                      //  window.alert("submited !!!");                     
+                    }
+                </script>
+            </div>
+        <div>   
+    </div>
+</body>
+</html>
